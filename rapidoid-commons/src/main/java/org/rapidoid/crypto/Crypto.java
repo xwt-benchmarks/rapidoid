@@ -40,6 +40,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
+import org.checkerframework.checker.crypto.qual.AllowedAlgorithms;
+
 @Authors("Nikolche Mihajlovski")
 @Since("4.0.0")
 public class Crypto extends RapidoidThing {
@@ -62,7 +64,7 @@ public class Crypto extends RapidoidThing {
 		secretKey = null;
 	}
 
-	public static MessageDigest digest(String algorithm) {
+	public static MessageDigest digest(@AllowedAlgorithms({"SHA-(224|256|384|512|512\\/224|512\\/256)"}) String algorithm) {
 		try {
 			return MessageDigest.getInstance(algorithm);
 		} catch (NoSuchAlgorithmException e) {
@@ -70,7 +72,7 @@ public class Crypto extends RapidoidThing {
 		}
 	}
 
-	public static Cipher cipher(String transformation) {
+	public static Cipher cipher(@AllowedAlgorithms({"((PBEWith(SHA256|HmacSHA1|HmacSHA224|HmacSHA256|HmacSHA384|HmacSHA512)And(DESede|TripleDES|2KeyTripleDES|3KeyTripleDES|AES_128|AES_256))|AES|AES_128|AES_256|AESWrap|ARCFOUR|ECIES|RC5|RSA)\\/(NONE|CBC|GCM|CCM|CFB|CTR|CTS|OFB|PCBC)\\/(NoPadding|ISO10126Padding|OAEPPadding|PKCS1Padding|PKCS5Padding|PKCS7Padding|SSL3Padding|(OAEPWith(SHA-224|SHA-256|SHA-384|SHA-512)AndMGF1Padding))", "RSA", "RSA\\/ECB\\/(NoPadding|ISO10126Padding|OAEPPadding|PKCS1Padding|PKCS5Padding|PKCS7Padding|SSL3Padding|(OAEPWith(SHA-224|SHA-256|SHA-384|SHA-512)AndMGF1Padding))", "PBEWith(SHA256|HmacSHA1|HmacSHA224|HmacSHA256|HmacSHA384|HmacSHA512)And(DESede|TripleDES|2KeyTripleDES|3KeyTripleDES|AES_128|AES_256)"}) String transformation) {
 		try {
 			return Cipher.getInstance(transformation);
 		} catch (NoSuchAlgorithmException e) {
